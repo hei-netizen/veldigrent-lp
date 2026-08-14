@@ -141,6 +141,29 @@ h1,h2,h3,h4{font-family:var(--mont);font-weight:800;line-height:1.08;letter-spac
 .fmsg a{text-decoration:underline;font-weight:700}
 .formcard .fine{display:flex;flex-direction:column;gap:3px;font-size:0.74rem;color:var(--muted);margin-top:10px;text-align:center}
 .formcard .fine b{color:var(--ink2);font-weight:700}
+/* ---- multi-steg skjema (speiler veldigrent.no/flyttevask — Fluent Forms 4 steg) ---- */
+.fstep{display:none}
+.fstep.on{display:block}
+.fgrid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+@media(max-width:380px){.fgrid2{grid-template-columns:1fr}}
+.field select{flex:1;width:100%;padding:10px 36px 10px 13px;border:0;background:transparent;font-family:var(--mont);font-size:0.94rem;color:var(--ink);appearance:none;-webkit-appearance:none;cursor:pointer}
+.field select:focus{outline:none}
+.field select:invalid{color:var(--muted)}
+.field .inp.sel{position:relative}
+.field .inp.sel::after{content:'';position:absolute;right:14px;top:50%;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.fsteps{display:flex;align-items:center;gap:6px;margin:2px 0 12px}
+.fsteps b{height:5px;flex:1;border-radius:3px;background:var(--line);transition:.25s}
+.fsteps b.on{background:var(--clay)}
+.fsteps span{font-size:0.72rem;font-weight:700;color:var(--muted);white-space:nowrap;margin-left:4px}
+.cbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.cbox{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:10px;background:var(--sand);padding:9px 10px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:.15s;line-height:1.3}
+.cbox:has(input:checked){border-color:var(--clay);background:var(--clay-tint);color:var(--clay-deep)}
+.cbox input{accent-color:var(--clay);width:15px;height:15px;flex:none;margin:0}
+.fnav{display:flex;justify-content:space-between;align-items:stretch;gap:10px;margin-top:12px}
+.fnav .btn-soft{padding:11px 20px;justify-content:center}
+.fnav .cta{flex:1;padding:12px 28px}
+.gdpr{display:flex;align-items:flex-start;gap:9px;font-size:0.78rem;color:var(--muted);margin-top:10px;cursor:pointer;text-align:left}
+.gdpr input{accent-color:var(--clay);margin-top:2px;flex:none}
 @media(max-width:900px){
   .hero{padding:26px 0 46px}
   .hero-grid{grid-template-columns:1fr;gap:30px}
@@ -314,29 +337,138 @@ h1,h2,h3,h4{font-family:var(--mont);font-weight:800;line-height:1.08;letter-spac
             <span>Svar med skreddersydd tilbud &mdash; kort responstid, helt uforpliktende.</span>
           </div>
           <div class="fmsg" id="formMsg">Takk! Vi har mottatt foresp&oslash;rselen &mdash; du h&oslash;rer fra oss med et fast tilbud s&aring; raskt som mulig. Haster det? Ring oss p&aring; <a href="tel:+4722448440">22 44 84 40</a>.</div>
+          <!-- Skjemaet speiler veldigrent.no/flyttevask/ (Fluent Forms #11): samme 4 steg,
+               samme felt, samme nedtrekksvalg. Avvik: «Velg renhold» er forhåndsvalgt til
+               Flyttevask (LP-ens tema) — bytt til tom om ønskelig. -->
           <form id="leadForm" novalidate>
-            <div class="field">
-              <label for="name">Fornavn og etternavn <span class="req">*</span></label>
-              <div class="inp"><input type="text" id="name" name="name" placeholder="Navnet ditt" required></div>
+            <div class="fsteps" id="fsteps"><b class="on"></b><b></b><b></b><b></b><span id="fstepTxt">Steg 1 av 4</span></div>
+
+            <!-- STEG 1: kontakt -->
+            <div class="fstep on" data-step="1">
+              <div class="field">
+                <label for="email">E-post <span class="req">*</span></label>
+                <div class="inp"><input type="email" id="email" name="email" placeholder="Epost-adresse" required></div>
+              </div>
+              <div class="field">
+                <label for="phone">Telefonnummer <span class="req">*</span></label>
+                <div class="inp"><span class="flag">&#127475;&#127476;</span><input type="tel" id="phone" name="phone" placeholder="Telefonnummer" required></div>
+              </div>
+              <div class="fgrid2">
+                <div class="field">
+                  <label for="first_name">Fornavn <span class="req">*</span></label>
+                  <div class="inp"><input type="text" id="first_name" name="first_name" placeholder="Fornavn" required></div>
+                </div>
+                <div class="field">
+                  <label for="last_name">Etternavn <span class="req">*</span></label>
+                  <div class="inp"><input type="text" id="last_name" name="last_name" placeholder="Etternavn" required></div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="omrade">Omr&aring;de <span class="req">*</span></label>
+                <div class="inp sel"><select id="omrade" name="omrade" required>
+                  <option value="" disabled selected>Velg omr&aring;de</option>
+                  <option>Oslo</option><option>&Oslash;stfold</option><option>Buskerud</option><option>Akershus</option><option>Bergen</option><option>Indre &Oslash;stfold</option><option>Trondheim</option>
+                </select></div>
+              </div>
+              <div class="fgrid2">
+                <div class="field">
+                  <label for="onsket_dato">&Oslash;nsket dato <span class="req">*</span></label>
+                  <div class="inp"><input type="date" id="onsket_dato" name="onsket_dato" required></div>
+                </div>
+                <div class="field">
+                  <label for="onsket_tid">&Oslash;nsket tid <span class="req">*</span></label>
+                  <div class="inp sel"><select id="onsket_tid" name="onsket_tid" required>
+                    <option value="" disabled selected>Velg</option>
+                    <option>9:00</option><option>15:00</option>
+                  </select></div>
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label for="phone">Telefon <span class="req">*</span></label>
-              <div class="inp"><span class="flag">&#127475;&#127476;</span><input type="tel" id="phone" name="phone" placeholder="S&aring; vi kan ringe deg med tilbudet" required></div>
+
+            <!-- STEG 2: bolig -->
+            <div class="fstep" data-step="2">
+              <div class="field">
+                <label for="adresse">Adresse <span class="req">*</span></label>
+                <div class="inp"><input type="text" id="adresse" name="adresse" placeholder="Adresse" required></div>
+              </div>
+              <div class="fgrid2">
+                <div class="field">
+                  <label for="postnr">Postnummer <span class="req">*</span></label>
+                  <div class="inp"><input type="text" id="postnr" name="postnr" inputmode="numeric" placeholder="Postnummer" required></div>
+                </div>
+                <div class="field">
+                  <label for="by">By/Sted <span class="req">*</span></label>
+                  <div class="inp"><input type="text" id="by" name="by" placeholder="By/Sted" required></div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="tjeneste">Velg renhold <span class="req">*</span></label>
+                <div class="inp sel"><select id="tjeneste" name="tjeneste" required>
+                  <option value="" disabled>Velg tjeneste</option>
+                  <option selected>Flyttevask</option><option>Visningsvask</option><option>Vask av d&oslash;dsbo</option><option>Vindusvask</option>
+                </select></div>
+              </div>
+              <div class="field">
+                <label for="m2">Hvor mange m&sup2; <span class="req">*</span></label>
+                <div class="inp sel"><select id="m2" name="m2" required>
+                  <option value="" disabled selected>Velg st&oslash;rrelse</option>
+                  <option>0-40 m2</option><option>41-50 m2</option><option>51-60 m2</option><option>61-70 m2</option><option>71-80 m2</option><option>81-90 m2</option><option>91-100 m2</option><option>100-115 m2</option><option>116-130 m2</option><option>131-150 m2</option><option>151-170 m2</option><option>171-200 m2</option><option>200-250 m2</option><option>250-300 m2</option>
+                </select></div>
+              </div>
             </div>
-            <div class="field">
-              <label for="email">E-post <span class="req">*</span></label>
-              <div class="inp"><input type="email" id="email" name="email" placeholder="din@epost.no" required></div>
+
+            <!-- STEG 3: detaljer -->
+            <div class="fstep" data-step="3">
+              <div class="fgrid2">
+                <div class="field">
+                  <label for="antall_bad">Antall bad? <span class="req">*</span></label>
+                  <div class="inp"><input type="number" id="antall_bad" name="antall_bad" min="0" inputmode="numeric" placeholder="Antall bad?" required></div>
+                </div>
+                <div class="field">
+                  <label for="antall_kjokken">Antall kj&oslash;kken? <span class="req">*</span></label>
+                  <div class="inp"><input type="number" id="antall_kjokken" name="antall_kjokken" min="0" inputmode="numeric" placeholder="Antall kj&oslash;kken?" required></div>
+                </div>
+              </div>
+              <div class="field">
+                <label>Ekstra tjenester</label>
+                <div class="cbox-grid">
+                  <label class="cbox"><input type="checkbox" name="ekstra_tjenester" value="Persienner"> Persienner</label>
+                  <label class="cbox"><input type="checkbox" name="ekstra_tjenester" value="Bod" data-show="f_antall_bod"> Bod</label>
+                  <label class="cbox"><input type="checkbox" name="ekstra_tjenester" value="Terasse"> Terasse</label>
+                  <label class="cbox"><input type="checkbox" name="ekstra_tjenester" value="Utvendig vindusvask" data-show="f_antall_vinduer"> Utvendig vindusvask</label>
+                  <label class="cbox"><input type="checkbox" name="ekstra_tjenester" value="Peis rens"> Peis rens</label>
+                  <label class="cbox"><input type="checkbox" name="ekstra_tjenester" value="Balkong" data-show="f_antall_balkong"> Balkong</label>
+                </div>
+              </div>
+              <div class="field" id="f_antall_bod" style="display:none">
+                <label for="antall_bod">Antall bod?</label>
+                <div class="inp"><input type="number" id="antall_bod" name="antall_bod" min="1" inputmode="numeric" placeholder="Antall bod?"></div>
+              </div>
+              <div class="field" id="f_antall_balkong" style="display:none">
+                <label for="antall_balkong">Antall balkong?</label>
+                <div class="inp"><input type="number" id="antall_balkong" name="antall_balkong" min="1" inputmode="numeric" placeholder="Antall balkong?"></div>
+              </div>
+              <div class="field" id="f_antall_vinduer" style="display:none">
+                <label for="antall_vinduer">Antall vinduer?</label>
+                <div class="inp"><input type="number" id="antall_vinduer" name="antall_vinduer" min="1" inputmode="numeric" placeholder="Antall vinduer?"></div>
+              </div>
             </div>
-            <div class="field">
-              <label for="zip">Postnummer <span style="font-weight:500;color:var(--muted)">(valgfritt)</span></label>
-              <div class="inp"><input type="text" id="zip" name="zip" inputmode="numeric" placeholder="F.eks. 0151 &mdash; s&aring; vet vi hvor boligen ligger"></div>
+
+            <!-- STEG 4: melding + samtykke -->
+            <div class="fstep" data-step="4">
+              <div class="field">
+                <label for="melding">Melding <span style="font-weight:500;color:var(--muted)">(valgfritt)</span></label>
+                <div class="inp"><textarea id="melding" name="melding" rows="3" placeholder="Info om bosted og &oslash;nsket tidspunkt for renhold"></textarea></div>
+              </div>
+              <label class="gdpr"><input type="checkbox" name="gdpr" value="Ja"> Jeg vil motta e-post om tilbud og nyheter fra Veldig Rent AS. (Du kan melde deg av n&aring;r som helst)</label>
             </div>
-            <div class="field">
-              <label for="msg">Om boligen <span style="font-weight:500;color:var(--muted)">(valgfritt)</span></label>
-              <div class="inp"><textarea id="msg" name="message" rows="2" placeholder="St&oslash;rrelse (m&sup2;), antall rom &mdash; og n&aring;r er overtakelsen?"></textarea></div>
-            </div>
+
             <input type="hidden" name="interest" value="Flyttevask Oslo — 15 %-kampanje">
-            <button type="submit" class="cta"><span class="t">F&aring; gratis pristilbud<span class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="sub">Gratis og helt uforpliktende</span></button>
+            <div class="fnav">
+              <button type="button" class="btn-soft" id="fPrev" style="display:none">Forrige</button>
+              <button type="button" class="cta" id="fNext"><span class="t">Neste<span class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+              <button type="submit" class="cta" id="fSubmit" style="display:none"><span class="t">Send inn<span class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="sub">Gratis og helt uforpliktende</span></button>
+            </div>
           </form>
           <div class="fine">
             <span>100&nbsp;% uforpliktende &mdash; vi deler aldri opplysningene dine.</span>
@@ -588,15 +720,11 @@ h1,h2,h3,h4{font-family:var(--mont);font-weight:800;line-height:1.08;letter-spac
         <li style="display:flex;align-items:flex-start;gap:11px;font-size:0.98rem;font-weight:600;color:var(--ink2)"><span class="chk" style="margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <span>Skreddersydd fastpris &mdash; som regel samme dag</span></li>
         <li style="display:flex;align-items:flex-start;gap:11px;font-size:0.98rem;font-weight:600;color:var(--ink2)"><span class="chk" style="margin-top:2px"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <span>15&nbsp;% rabatt &mdash; <b>t.o.m. 31. august</b></span></li>
       </ul>
-      <div class="fmsg" id="formMsgModal">Takk! Vi har mottatt foresp&oslash;rselen &mdash; du h&oslash;rer fra oss med et fast tilbud s&aring; raskt som mulig. Haster det? Ring <a href="tel:+4722448440">22 44 84 40</a>.</div>
-      <form id="leadFormModal" novalidate>
-        <div class="field"><label for="m_name">Fornavn og etternavn <span class="req">*</span></label><div class="inp"><input type="text" id="m_name" name="name" placeholder="Navnet ditt" required></div></div>
-        <div class="field"><label for="m_phone">Telefon <span class="req">*</span></label><div class="inp"><span class="flag">&#127475;&#127476;</span><input type="tel" id="m_phone" name="phone" placeholder="S&aring; vi kan ringe deg med tilbudet" required></div></div>
-        <div class="field"><label for="m_email">E-post <span class="req">*</span></label><div class="inp"><input type="email" id="m_email" name="email" placeholder="din@epost.no" required></div></div>
-        <input type="hidden" name="interest" value="Popup — Flyttevask Oslo 15 %">
-        <button type="submit" class="cta" style="width:100%;margin-top:4px"><span class="t">F&aring; gratis pristilbud<span class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="sub">Gratis og helt uforpliktende</span></button>
-        <p style="font-size:0.78rem;color:var(--muted);margin-top:14px;text-align:center">Vi deler aldri opplysningene dine med noen andre.</p>
-      </form>
+      <!-- Popupen har ikke eget skjema — den sender kun brukeren til hovedskjemaet i hero -->
+      <div style="text-align:center">
+        <button type="button" class="cta lg" id="popupGo" style="width:100%"><span class="t">G&aring; til skjemaet<span class="arw"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="sub">Tar under ett minutt &mdash; helt uforpliktende</span></button>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:14px">Vi deler aldri opplysningene dine med noen andre.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -650,18 +778,50 @@ function flushStoredLeads(){
   a.forEach(function(l){if(!l._b&&l._ts&&(now-l._ts)<6048e5){postTo(BACKUP_ENDPOINT,l);l._b=1;ch=true;}});
   if(ch)localStorage.setItem('vr_leads',JSON.stringify(a));}catch(e){}
 }
-function submitLead(form,msgEl,extraSource){
-  if(!form.name.value||!form.phone.value||!form.email.value){form.reportValidity();return;}
-  sendLead({subject:'Ring ASAP — nytt Veldig Rent-lead',lead_source:LEAD_SOURCE+(extraSource||''),name:form.name.value,phone:form.phone.value,email:form.email.value,zip:(form.zip?form.zip.value:''),message:(form.message?form.message.value:''),interest:(form.interest?form.interest.value:'Flyttevask Oslo'),page_url:location.href,user_agent:navigator.userAgent});
+/* ---- multi-steg-navigasjon (speiler Fluent Forms-stegene på veldigrent.no/flyttevask) ---- */
+var leadForm=document.getElementById('leadForm');
+var steps=leadForm?leadForm.querySelectorAll('.fstep'):[];
+var curStep=1,maxStep=steps.length;
+function showStep(n){
+  curStep=Math.max(1,Math.min(maxStep,n));
+  for(var i=0;i<steps.length;i++)steps[i].classList.toggle('on',i===curStep-1);
+  var bars=document.querySelectorAll('#fsteps b');
+  for(var k=0;k<bars.length;k++)bars[k].classList.toggle('on',k<curStep);
+  var t=document.getElementById('fstepTxt');if(t)t.textContent='Steg '+curStep+' av '+maxStep;
+  document.getElementById('fPrev').style.display=curStep>1?'':'none';
+  document.getElementById('fNext').style.display=curStep<maxStep?'':'none';
+  document.getElementById('fSubmit').style.display=curStep===maxStep?'':'none';
+}
+function validStep(){
+  var fields=steps[curStep-1].querySelectorAll('input[required],select[required],textarea[required]');
+  for(var i=0;i<fields.length;i++){if(!fields[i].checkValidity()){fields[i].reportValidity();return false;}}
+  return true;
+}
+if(leadForm){
+  document.getElementById('fNext').addEventListener('click',function(){if(validStep())showStep(curStep+1);});
+  document.getElementById('fPrev').addEventListener('click',function(){showStep(curStep-1);});
+  /* betingede felt: Bod/Balkong/Utvendig vindusvask viser antall-felt (som på veldigrent.no) */
+  leadForm.querySelectorAll('.cbox input[data-show]').forEach(function(cb){
+    cb.addEventListener('change',function(){var f=document.getElementById(cb.getAttribute('data-show'));if(f)f.style.display=cb.checked?'':'none';});
+  });
+}
+function submitLead(form,msgEl){
+  if(!validStep())return;
+  var p={},fd=new FormData(form);
+  fd.forEach(function(v,k){if(v!=='')p[k]=p[k]?p[k]+', '+v:v;});
+  p.name=((p.first_name||'')+' '+(p.last_name||'')).trim();
+  p.subject='Ring ASAP — nytt Veldig Rent-lead';
+  p.lead_source=LEAD_SOURCE;
+  p.page_url=location.href;
+  p.user_agent=navigator.userAgent;
+  sendLead(p);
   try{sessionStorage.setItem('vr_lead_done','1');}catch(e){}
   /* Konverterings-events (pixel/gtag) settes opp på takkesiden ved lansering — ikke her. */
   if(msgEl)msgEl.style.display='block';
   if(THANK_YOU_URL){setTimeout(function(){window.location.href=THANK_YOU_URL;},650);}
   else{form.style.display='none';}
 }
-function bindForm(id,msgId,src){var f=document.getElementById(id);if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();submitLead(e.target,document.getElementById(msgId),src);});}
-bindForm('leadForm','formMsg','');
-bindForm('leadFormModal','formMsgModal','-popup');
+if(leadForm){leadForm.addEventListener('submit',function(e){e.preventDefault();e.stopPropagation();if(e.stopImmediatePropagation)e.stopImmediatePropagation();submitLead(e.target,document.getElementById('formMsg'));});}
 flushStoredLeads();
 
 /* ---- timed popup (15s, én gang per økt) ---- */
@@ -672,6 +832,13 @@ if(overlay){
   var closePopup=function(){overlay.classList.remove('show');overlay.setAttribute('aria-hidden','true');document.body.style.overflow='';try{sessionStorage.setItem('vr_popup_done','1');}catch(e){}};
   setTimeout(openPopup,15000);
   var pc=document.getElementById('popupClose');if(pc)pc.addEventListener('click',closePopup);
+  var pg=document.getElementById('popupGo');
+  if(pg)pg.addEventListener('click',function(){
+    closePopup();
+    var fc=document.querySelector('.formcard');
+    if(fc){scrollToY(Math.max(0,fc.getBoundingClientRect().top+window.pageYOffset-20),500);
+      var first=document.getElementById('email');if(first)setTimeout(function(){first.focus();},550);}
+  });
   overlay.addEventListener('click',function(e){if(e.target===overlay)closePopup();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('show'))closePopup();});
 }
