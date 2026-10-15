@@ -1,0 +1,20 @@
+/* Firmavelger: Rask Flytting / Veldig Rent — én portal per firma på samme sted */
+.firma{background:var(--paper,#fff);border-bottom:1px solid var(--line,#E9E7E0)}
+.firma .wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:14px;padding-bottom:14px}
+.firma a{display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--ink,#071812);background:var(--bg,#FCFBF9);border:2px solid var(--line,#E9E7E0);border-radius:16px;padding:12px 16px;transition:border-color .15s,background .15s,transform .12s}
+.firma a:hover{border-color:var(--brand,#16346B)}
+.firma a:active{transform:scale(.98)}
+.firma a img{height:34px;width:auto;flex:none}
+.firma a span{display:grid;line-height:1.25}
+.firma a b{font-size:17px}
+.firma a small{font-size:13px;color:var(--muted,#5C5F5A);font-weight:500}
+.firma a i{margin-left:auto;font-style:normal;min-width:24px;height:24px;padding:0 7px;border-radius:999px;background:#E5484D;color:#fff;font:700 12px/24px Geist,system-ui,sans-serif;text-align:center}
+.firma a i:empty{display:none}
+.firma a[aria-current="true"]{border-color:var(--brand,#16346B);background:var(--brand-tint,#EEF1F7);box-shadow:0 0 0 3px var(--brand-tint,#EEF1F7)}
+.firma a[aria-current="true"] small{color:var(--brand,#16346B);font-weight:600}
+html[data-firma="vr"] [data-firma-kun="rf"],html[data-firma="rf"] [data-firma-kun="vr"]{display:none!important}
+/* toppen viser logoen til valgt firma */
+html[data-firma="vr"] header .logos img.tb[src*="raskflytting"],html[data-firma="rf"] header .logos img.tb:not([src*="raskflytting"]){display:none}
+html[data-firma] header .logos img.tb{margin-left:0!important}
+@media (max-width:640px){.firma .wrap{gap:8px;padding-top:10px;padding-bottom:10px}.firma a{gap:10px;padding:10px 12px;border-radius:14px}.firma a img{height:24px}.firma a b{font-size:15px}.firma a small{font-size:12px}}
+@media (max-width:400px){.firma a img{display:none}}
